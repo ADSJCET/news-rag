@@ -1,7 +1,7 @@
 "use client"
 
 import { getStringType, strictString } from "@/lib/checker";
-import type { LLMs } from "@/lib/model";
+import type { LLMs } from "@/ai/model";
 import { LLM } from "@/lib/model/data";
 import { getBaseRaw } from "@/server/api/util/coder";
 import { useEditorStore } from "@/state/editor";

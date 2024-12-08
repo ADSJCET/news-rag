@@ -1,7 +1,7 @@
 "use client";
 
+import type { GetToolResult } from "@/ai/tools";
 import { useChat } from "ai/react";
-import Image from "next/image";
 
 export default function Page() {
 	const { messages, input, setInput, handleSubmit } = useChat();
@@ -19,32 +19,79 @@ export default function Page() {
 
 							if (state === "result") {
 								if (toolName === "generateMeme") {
-									const { result } = toolInvocation;
+									const { result } = toolInvocation as {
+										result: GetToolResult<"generateMeme">;
+									};
 									return (
 										<div
 											key={toolCallId}
 											className="mt-1 p-2 bg-gray-100 rounded"
 										>
-											<img src={result.url} alt="img" />
+											<div className="text-bold bg-white space-y-2">
+												<p>{result.caption}</p>
+												<img
+													src={result.url}
+													alt="img"
+													className="w-full h-auto"
+												/>
+											</div>
 										</div>
 									);
 								}
 								if (toolName === "generateVideo") {
-									const { result } = toolInvocation;
+									const { result } = toolInvocation as {
+										result: GetToolResult<"generateVideo">;
+									};
+
 									return (
 										<div
 											key={toolCallId}
 											className="mt-1 p-2 bg-gray-100 rounded"
 										>
-											<video controls>
+											<video controls className="w-full h-auto">
 												<source src={result.url} type="video/mp4" />
 												<track
 													kind="captions"
 													srcLang="en"
-													src={result.captionsUrl}
 													label="English captions"
 												/>
 											</video>
+										</div>
+									);
+								}
+								if (toolName === "searchNews") {
+									const { result } = toolInvocation as {
+										result: GetToolResult<"searchNews">;
+									};
+
+									if (!result.news || result.news.length === 0) {
+										return (
+											<div
+												key={toolCallId}
+												className="mt-1 p-2 bg-gray-100 rounded"
+											>
+												<div>No news found</div>
+											</div>
+										);
+									}
+
+									return (
+										<div
+											key={toolCallId}
+											className="mt-1 p-2 bg-gray-100 rounded flex"
+										>
+											{result.news.map((news) => (
+												<a
+													key={news.url}
+													href={news.url}
+													target="_blank"
+													rel="noreferrer"
+													className="text-blue-500 border border-blue-500 rounded p-2 m-1"
+												>
+													<div className="font-semibold">{news.title}</div>
+													{/* <div>{news.description}</div> */}
+												</a>
+											))}
 										</div>
 									);
 								}
