@@ -41,9 +41,20 @@ export const generateVideo = tool({
 	parameters: z.object({
 		topic: z.string(),
 	}),
-	execute: async ({ topic }) => ({
-		url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-	}),
+	execute: async ({ topic }) => {
+		const data = await generateObject({
+			system: `You are a video idea guessing machine. Generate a video based on topic: ${topic}`,
+			prompt: topic,
+			model,
+			schema: z.object({
+				url: z.string().describe("URL of video"),
+			}),
+		});
+
+		return {
+			url: data.object.url,
+		};
+	},
 });
 export const searchNewsTool = tool({
 	description: "Search for news based on a query",
@@ -72,7 +83,7 @@ export const searchNewsTool = tool({
 		const count = 3;
 		const releventNews = await generateObject({
 			model,
-			system: `You are a filter tool. Here are some news articles, find most recent & relevent to topic ${newsTopic}. Limit: ${count}`,
+			system: `You are a filter tool. Here are some news articles, find most recent & relevent to topic: ${newsTopic}. Limit: ${count}`,
 			schema: z.object({
 				id: z.array(z.string()).describe("ID"),
 			}),

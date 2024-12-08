@@ -29,6 +29,7 @@ export const env = createEnv({
 		ELEVENLABS_API_KEY: z.string(),
 		CLOUDFLARE_ACCOUNT_ID: z.string(),
 		CLOUDFLARE_API_TOKEN: z.string(),
+		HUGGINGFACE_API_TOKEN: z.string(),
 	},
 
 	/**
@@ -54,8 +55,9 @@ export const env = createEnv({
 		GROQ_API_KEY: process.env.GROQ_API_KEY,
 		NEWS_API_ORG_KEY: process.env.NEWS_API_ORG_KEY,
 		ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
-    CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
-    CLOUDFLARE_API_TOKEN: process.env.CLOUDFLARE_API_TOKEN,
+		CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
+		CLOUDFLARE_API_TOKEN: process.env.CLOUDFLARE_API_TOKEN,
+		HUGGINGFACE_API_TOKEN: process.env.HUGGINGFACE_API_TOKEN,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

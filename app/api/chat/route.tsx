@@ -1,4 +1,4 @@
-import { groq, model } from '@/ai/model';
+import { model } from '@/ai/model';
 import { tools } from '@/ai/tools';
 import { streamText } from 'ai';
 
@@ -8,7 +8,7 @@ import { streamText } from 'ai';
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  console.log(messages)
+  console.log(JSON.stringify(messages))
 
   const result = streamText({
     model: model,

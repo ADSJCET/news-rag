@@ -7,7 +7,7 @@ const elevenlabs = new ElevenLabsClient({
 });
 
 export const getVoice = async (text: string) => {
-	const { data, error, isSuccess } = await triedAsync(
+	return await triedAsync(
 		elevenlabs.generate({
 			voice: "Sarah",
 			text,
@@ -16,4 +16,7 @@ export const getVoice = async (text: string) => {
 	);
 };
 
-// const audio = await play(audio);
+const {data, error, isSuccess} = await getVoice("Hello, world!");
+
+isSuccess && console.log(data);
+// isSuccess && await play(data);
