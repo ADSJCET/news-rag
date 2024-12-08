@@ -34,24 +34,9 @@ export async function generateImage(prompt: string) {
 		throw new Error(`HTTP error! status: ${result.status}`);
 	}
 
-	const imageBuffer = await result.arrayBuffer();
-    const base64Image = `data:image/png;base64,${imageBuffer.toString()}`;
+	const blob = await result.blob()
+	// const data = await blobToBase64(blob) as string
 
-	return base64Image;
-
-	// const imageBlob = await result.blob()
-
-	// // return URL.createObjectURL(imageBlob);
-	// return await blobToBase64(imageBlob) as string
+	const buffer = Buffer.from(await blob.arrayBuffer());
+    return `data:${blob.type};base64,${buffer.toString('base64')}`;
 }
-
-function blobToBase64(blob) {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onloadend = () => resolve(reader.result);
-		reader.onerror = reject;
-		reader.readAsDataURL(blob);
-	});
-}
-
-console.log(await generateImage("A cat in a hat"));

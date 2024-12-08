@@ -30,8 +30,6 @@ export const generateMeme = tool({
 
         const url = await generateImage(data.object.image)
 
-        console.log(data.object, url);
-
         return {
             url, caption: data.object.caption
         }

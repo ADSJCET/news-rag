@@ -1,5 +1,5 @@
-import { tools } from '@/ai/tools';
 import { groq, model } from '@/ai/model';
+import { tools } from '@/ai/tools';
 import { streamText } from 'ai';
 
 // Allow streaming responses up to 30 seconds
@@ -7,6 +7,8 @@ import { streamText } from 'ai';
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
+
+  console.log(messages)
 
   const result = streamText({
     model: model,
