@@ -11,6 +11,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import { Newspaper } from "lucide-react";
 import { useState } from "react";
 
 export default function Page() {
@@ -30,12 +31,19 @@ export default function Page() {
 				w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[120px] animate-pulse"></div>
 
 			<div className="w-full max-w-3xl relative z-10">
-				<h1 className="text-7xl font-bold text-center mb-8 
-					bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600
-					animate-pulse-glow
-					drop-shadow-[0_0_30px_rgba(99,102,241,0.4)]">
-					News Flare
-				</h1>
+				<div className="flex flex-col items-center mb-8">
+					<Newspaper 
+						size={64} 
+						className="text-blue-400 mb-4" 
+						strokeWidth={1.5} 
+					/>
+					<h1 className="text-7xl font-bold text-center 
+						bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600
+						animate-pulse-glow
+						drop-shadow-[0_0_30px_rgba(99,102,241,0.4)]">
+						News Flare
+					</h1>
+				</div>
 
 				<div className="bg-gray-800/50 backdrop-blur-md rounded-xl shadow-2xl border border-gray-700/50 mb-4">
 					<div className="max-h-[75vh] overflow-y-auto overflow-x-hidden scrollbar-hide p-4">
@@ -170,12 +178,12 @@ export default function Page() {
 									onValueChange={setToneValue}
 								>
 									<SelectTrigger className="w-full bg-gray-700 text-white border-gray-600">
-										<SelectValue placeholder="Select tone" />
+										<SelectValue placeholder="Select tone" className="text-white" />
 									</SelectTrigger>
 									<SelectContent className="bg-gray-800 border-gray-700">
-										<SelectItem value="funny" className="focus:bg-gray-700 hover:bg-gray-700">Funny</SelectItem>
-										<SelectItem value="neutral" className="focus:bg-gray-700 hover:bg-gray-700">Neutral</SelectItem>
-										<SelectItem value="vere" className="focus:bg-gray-700 hover:bg-gray-700">Vere</SelectItem>
+										<SelectItem value="funny" className="text-white focus:bg-gray-700 hover:bg-gray-700">Funny</SelectItem>
+										<SelectItem value="neutral" className="text-white focus:bg-gray-700 hover:bg-gray-700">Neutral</SelectItem>
+										<SelectItem value="vere" className="text-white focus:bg-gray-700 hover:bg-gray-700">Vere</SelectItem>
 									</SelectContent>
 								</Select>
 							</div>
