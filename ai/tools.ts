@@ -42,17 +42,34 @@ export const generateVideo = tool({
 		topic: z.string(),
 	}),
 	execute: async ({ topic }) => {
-		const data = await generateObject({
-			system: `You are a video idea guessing machine. Generate a video based on topic: ${topic}`,
-			prompt: topic,
+		const text = await generateObject({
+			system: "You are a news reporter, Generate a news video based on topic. Be concise and informative",
+			prompt: `topic: ${topic}`,
 			model,
 			schema: z.object({
-				url: z.string().describe("URL of video"),
+				paragraph: z.string().describe("paragraph of information for video"),
 			}),
 		});
 
+		console.log(text.object.paragraph);
+
+		const count = 3
+
+		const image = await generateObject({
+			system: `You are a news reporter, generate ${count} image ideas for video of topic`,
+			prompt: `topic: ${topic}`,
+			model,
+			schema: z.object({
+				images: z.array(z.string()),
+			}),
+		});
+
+
+		console.log(image.object.images);
+
 		return {
-			url: data.object.url,
+			url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+			paragraph: text.object.paragraph,
 		};
 	},
 });

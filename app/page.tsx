@@ -14,8 +14,12 @@ import {
 import { useState } from "react";
 
 export default function Page() {
-	const { messages, input, setInput, handleSubmit } = useChat();
 	const [toneValue, setToneValue] = useState("neutral");
+	const { messages, input, setInput, handleSubmit } = useChat({
+		body: {
+			tone: toneValue,
+		}
+	});
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-4 overflow-hidden relative">
