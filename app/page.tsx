@@ -1,9 +1,8 @@
 "use client";
 
 import type { GetToolResult } from "@/ai/tools";
-import { useChat } from "ai/react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   Select, 
   SelectContent, 
@@ -11,11 +10,13 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import { useChat } from "ai/react";
 import { useState } from "react";
 
 export default function Page() {
 	const { messages, input, setInput, handleSubmit } = useChat();
 	const [toneValue, setToneValue] = useState("neutral");
+	const [typeValue, setTypeValue] = useState("meme");
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-4 overflow-hidden relative">
@@ -23,16 +24,16 @@ export default function Page() {
 			<div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
 				w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[120px] animate-pulse"></div>
 
-			<div className="w-full max-w-md relative z-10">
+			<div className="w-full max-w-3xl relative z-10">
 				<h1 className="text-7xl font-bold text-center mb-8 
 					bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600
 					animate-pulse-glow
 					drop-shadow-[0_0_30px_rgba(99,102,241,0.4)]">
-					AI Companion
+					News Flare
 				</h1>
 
 				<div className="bg-gray-800/50 backdrop-blur-md rounded-xl shadow-2xl border border-gray-700/50 mb-4">
-					<div className="max-h-[60vh] overflow-y-auto p-4">
+					<div className="max-h-[70vh] overflow-y-auto p-4">
 						{messages.map((message) => (
 							<div key={message.id} className="mb-4 pb-4 border-b border-gray-700/30">
 								<div className="font-semibold text-gray-300 capitalize">{message.role}</div>
@@ -81,6 +82,23 @@ export default function Page() {
 																label="English captions"
 															/>
 														</video>
+													</div>
+												);
+											}
+											if (toolName === "generateAudio") {
+												const { result } = toolInvocation as {
+													result: GetToolResult<"generateAudio">;
+												};
+
+												return (
+													<div
+														key={toolCallId}
+														className="mt-1 p-2 bg-gray-700/30 rounded"
+													>
+														<audio controls className="w-full">
+															<source src={result.url} type="audio/mpeg" />
+															Your browser does not support the audio element.
+														</audio>
 													</div>
 												);
 											}
@@ -150,25 +168,46 @@ export default function Page() {
 							focus:ring-2 focus:ring-blue-500/50 focus:border-orange-500"
 						/>
 						<div className="flex items-center space-x-4">
-							<span className="text-sm text-gray-400 w-16">Tone:</span>
-							<Select 
-								value={toneValue}
-								onValueChange={setToneValue}
-							>
-								<SelectTrigger className="w-full">
-									<SelectValue placeholder="Select tone" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="funny">Funny</SelectItem>
-									<SelectItem value="neutral">Neutral</SelectItem>
-									<SelectItem value="vere">Vere</SelectItem>
-								</SelectContent>
-							</Select>
+							<div className="flex space-x-2 w-full">
+								<div className="flex items-center space-x-2 w-1/3">
+									<span className="text-sm text-gray-400 w-16">Tone:</span>
+									<Select 
+										value={toneValue}
+										onValueChange={setToneValue}
+									>
+										<SelectTrigger className="w-full">
+											<SelectValue placeholder="Select tone" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="funny">Funny</SelectItem>
+											<SelectItem value="neutral">Neutral</SelectItem>
+											<SelectItem value="vere">Vere</SelectItem>
+										</SelectContent>
+									</Select>
+								</div>
+								
+								<div className="flex items-center space-x-2 w-1/3">
+									<span className="text-sm text-gray-400 w-16">Type:</span>
+									<Select 
+										value={typeValue}
+										onValueChange={setTypeValue}
+									>
+										<SelectTrigger className="w-full">
+											<SelectValue placeholder="Select type" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="meme">Meme</SelectItem>
+											<SelectItem value="video">Video</SelectItem>
+											<SelectItem value="audio">Audio</SelectItem>
+										</SelectContent>
+									</Select>
+								</div>
+							</div>
 						</div>
 						<Button 
 							type="submit" 
 							className="w-full mt-2 bg-gradient-to-r from-blue-500 to-purple-600 
-							hover:from-blue-600 hover:to-purple-700 text-grey"
+							hover:from-blue-600 hover:to-purple-700 text-white"
 						>
 							Send
 						</Button>
