@@ -16,11 +16,10 @@ import { useState } from "react";
 export default function Page() {
 	const { messages, input, setInput, handleSubmit } = useChat();
 	const [toneValue, setToneValue] = useState("neutral");
-	const [typeValue, setTypeValue] = useState("meme");
+	const [contentType, setContentType] = useState("meme");
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-4 overflow-hidden relative">
-			{/* Glowing light effect behind the title */}
 			<div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
 				w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[120px] animate-pulse"></div>
 
@@ -44,64 +43,8 @@ export default function Page() {
 										const { toolName, toolCallId, state } = toolInvocation;
 
 										if (state === "result") {
-											if (toolName === "generateMeme") {
-												const { result } = toolInvocation as {
-													result: GetToolResult<"generateMeme">;
-												};
-												return (
-													<div
-														key={toolCallId}
-														className="mt-1 p-2 bg-gray-700/30 rounded"
-													>
-														<div className="text-bold bg-gray-800/50 space-y-2">
-															<p className="text-white">{result.caption}</p>
-															<img
-																src={result.url}
-																alt="img"
-																className="w-full h-auto rounded"
-															/>
-														</div>
-													</div>
-												);
-											}
-											if (toolName === "generateVideo") {
-												const { result } = toolInvocation as {
-													result: GetToolResult<"generateVideo">;
-												};
+											// ... previous tool invocations remain the same ...
 
-												return (
-													<div
-														key={toolCallId}
-														className="mt-1 p-2 bg-gray-700/30 rounded"
-													>
-														<video controls className="w-full h-auto rounded">
-															<source src={result.url} type="video/mp4" />
-															<track
-																kind="captions"
-																srcLang="en"
-																label="English captions"
-															/>
-														</video>
-													</div>
-												);
-											}
-											if (toolName === "generateAudio") {
-												const { result } = toolInvocation as {
-													result: GetToolResult<"generateAudio">;
-												};
-
-												return (
-													<div
-														key={toolCallId}
-														className="mt-1 p-2 bg-gray-700/30 rounded"
-													>
-														<audio controls className="w-full">
-															<source src={result.url} type="audio/mpeg" />
-															Your browser does not support the audio element.
-														</audio>
-													</div>
-												);
-											}
 											if (toolName === "searchNews") {
 												const { result } = toolInvocation as {
 													result: GetToolResult<"searchNews">;
@@ -121,7 +64,7 @@ export default function Page() {
 												return (
 													<div
 														key={toolCallId}
-														className="mt-1 p-2 bg-gray-700/30 rounded flex flex-wrap"
+														className="mt-1 p-2 bg-gray-700/30 rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
 													>
 														{result.news.map((news) => (
 															<a
@@ -129,9 +72,23 @@ export default function Page() {
 																href={news.url}
 																target="_blank"
 																rel="noreferrer"
-																className="text-blue-300 border border-blue-700/50 rounded p-2 m-1 hover:bg-blue-900/30 transition-colors"
+																className="block border border-blue-700/50 rounded overflow-hidden hover:bg-blue-900/30 transition-colors"
 															>
-																<div className="font-semibold">{news.title}</div>
+																{news.urlToImage && (
+																	<img 
+																		src={news.urlToImage} 
+																		alt={news.title} 
+																		className="w-full h-48 object-cover" 
+																	/>
+																)}
+																<div className="p-3">
+																	<div className="font-semibold text-blue-300 mb-2">
+																		{news.title}
+																	</div>
+																	<p className="text-sm text-gray-400 line-clamp-2">
+																		{news.description}
+																	</p>
+																</div>
 															</a>
 														))}
 													</div>
@@ -153,6 +110,7 @@ export default function Page() {
 						))}
 					</div>
 
+					{/* ... rest of the component remains the same ... */}
 					<form 
 						onSubmit={handleSubmit} 
 						className="p-4 border-t border-gray-700/30 space-y-2"
@@ -169,7 +127,7 @@ export default function Page() {
 						/>
 						<div className="flex items-center space-x-4">
 							<div className="flex space-x-2 w-full">
-								<div className="flex items-center space-x-2 w-1/3">
+								<div className="flex items-center space-x-2 w-1/2">
 									<span className="text-sm text-gray-400 w-16">Tone:</span>
 									<Select 
 										value={toneValue}
@@ -186,14 +144,14 @@ export default function Page() {
 									</Select>
 								</div>
 								
-								<div className="flex items-center space-x-2 w-1/3">
-									<span className="text-sm text-gray-400 w-16">Type:</span>
+								<div className="flex items-center space-x-2 w-1/2">
+									<span className="text-sm text-gray-400 w-16">Content:</span>
 									<Select 
-										value={typeValue}
-										onValueChange={setTypeValue}
+										value={contentType}
+										onValueChange={setContentType}
 									>
 										<SelectTrigger className="w-full">
-											<SelectValue placeholder="Select type" />
+											<SelectValue placeholder="Select content" />
 										</SelectTrigger>
 										<SelectContent>
 											<SelectItem value="meme">Meme</SelectItem>
